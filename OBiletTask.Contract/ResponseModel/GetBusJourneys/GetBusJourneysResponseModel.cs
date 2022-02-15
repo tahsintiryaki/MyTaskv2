@@ -91,11 +91,7 @@ namespace OBiletTask.ResponseModel.GetBusJourneys
             public object ForeColor { get; set; }
         }
 
-        public class Datum
-        {
-            
-        }
-
+        
         public int id { get; set; }
 
         [JsonProperty("partner-id")]
@@ -173,7 +169,7 @@ namespace OBiletTask.ResponseModel.GetBusJourneys
         [JsonProperty("disable-sales-without-date-of-birth")]
         public bool DisableSalesWithoutDateOfBirth { get; set; }
         public string status { get; set; }
-        //public List<Datum> data { get; set; }
+
         public object message { get; set; }
 
         [JsonProperty("user-message")]
