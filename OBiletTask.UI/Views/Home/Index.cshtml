@@ -94,7 +94,7 @@
 <script>
     function getBusJourney()
     {
-        document.getElementById('btnGetJourney').disabled = 'disabled';
+     
           var origin = $('option[value="'+$("#input-label-from").val()+'"]');
           var originId= origin.length ? origin.attr('id') : '0';
           var destionation = $('option[value="'+$("#input-label-to").val()+'"]');
@@ -119,7 +119,7 @@
               toastr.warning("Yolculuk tarihi boş geçilemez", "Uyarı");
           }
           else{
-              
+                 document.getElementById('btnGetJourney').disabled = 'disabled';
                    window.location.href="/Home/GetBusJournerysViewList?OriginId="+originId+"&&DestinationId="+destinationId+"&&DepartureDate="+departureDate        +"&&OriginLocation="+originLocation+"&&DestinationLocation="+destinationLocation;
           }
 
