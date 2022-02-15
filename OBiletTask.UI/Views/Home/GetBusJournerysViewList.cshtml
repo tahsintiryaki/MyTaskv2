@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Sefer Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f2f3f4;
+    }
+</style>
+
+@model List<OBiletTask.ResponseModel.GetBusJourneys.GetBusJourneysResponseModel>
+@if (@ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+
+}
+@if (Model != null && Model.Count > 0)
+{
+    <div class="row mb-2">
+
+        <div class="col-md-3">
+            <button class="btn btn-danger" type="button" style="height:50px; width:100%" onclick="history.back()" id="back_btn"><i class="fa-solid fa-left"></i> GERİ</button>
+
+        </div>
+
+        <div class="col-md-3">
+            <div class="card" style="background-color:#2F4EB4; color:white; height:50px; line-height:50px; text-align:center;">
+                Kalkış Noktası: @Model.FirstOrDefault()?.OriginLocation
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card" style="background-color:#2F4EB4; color:white;height:50px; line-height:50px; text-align:center;">
+                Varış Noktası: @Model.FirstOrDefault()?.DestinationLocation
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card" style="background-color:#2F4EB4; color:white;height:50px; line-height:50px; text-align:center;">
+                Tarih: @Model.FirstOrDefault()?.journey.departure.Value.ToShortDateString()
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-4"><b>Kalkış Saati: </b> @item.journey.departure.Value.ToShortTimeString()</div>
+                            <div class="col-md-4"><b>Varış Saati: </b>@item.journey.arrival.Value.ToShortTimeString()</div>
+                            <div class="col-md-4"><b>Tutar: </b> @item.journey.OriginalPrice.Value.ToString("N2") ₺</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @item.journey.origin <b>></b> @item.journey.destination
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        Sefer bulunamadı.
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

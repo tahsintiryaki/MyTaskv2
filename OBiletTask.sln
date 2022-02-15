@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OBiletTask.Contract", "OBiletTask.Contract\OBiletTask.Contract.csproj", "{D2C220C9-510E-488D-86FF-01F5BEC4705C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OBiletTask.UI", "OBiletTask.UI\OBiletTask.UI.csproj", "{F309BD50-33B5-4444-9A17-69451BBBB38D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2C220C9-510E-488D-86FF-01F5BEC4705C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C220C9-510E-488D-86FF-01F5BEC4705C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C220C9-510E-488D-86FF-01F5BEC4705C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C220C9-510E-488D-86FF-01F5BEC4705C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F309BD50-33B5-4444-9A17-69451BBBB38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F309BD50-33B5-4444-9A17-69451BBBB38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F309BD50-33B5-4444-9A17-69451BBBB38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F309BD50-33B5-4444-9A17-69451BBBB38D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62CFC92B-9831-4998-B170-78640D30A444}
+	EndGlobalSection
+EndGlobal

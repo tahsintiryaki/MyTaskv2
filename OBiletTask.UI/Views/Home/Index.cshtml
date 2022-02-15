@@ -1,0 +1,392 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+}
+     <link rel="stylesheet" href="~/css/Style.css" />
+ <div id="domMessage" style="display:none;">
+    <img src="~/gif/unnamed2.gif" width="50" height="50" /><br />
+</div>
+
+<!-- Main Home Banner and Input Search Container -->
+<div class="position-relative">
+    <div>
+        <div class="home-banner"></div>
+    </div>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="row">
+            <div class="alert alert-danger">
+                @ViewBag.ErrorMessage
+            </div>
+        </div>
+    }
+
+    <div class="input-search-container">
+
+        <form asp-controller="Home" asp-action="GetBusJournerys" method="post">
+
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="d-inline-block">
+   
+                        <label>Kalkış Noktası</label>
+                        <input id="input-label-from" class="inputForm" type="text" value="@ViewBag.CookieValue" onchange="checkDirection()" name="OriginId" required list="input-from-list">
+                        <datalist id="input-from-list">
+                            <!-- <option value="Gurgaon"></option> -->
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-secondary btn-sm center ml-3" type="button" onclick="changeDirection()">Yön Değiştir</button>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-inline-block position-relative">
+                       
+                        <label class="" for="">Varış Noktası</label>
+                        <input id="input-label-to" class="inputForm" type="text" value="@ViewBag.CookieValue2" onchange="checkDirection()" name="DestinationId" required list="input-to-list">
+                        <datalist id="input-to-list">
+                            <!-- <option value="Delhi"></option> -->
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-inline-block position-relative">
+               
+                <label class="" for="">Yolculuk Tarihi</label>
+                @if(@ViewBag.CookieDepartureDate !=DateTime.MinValue.ToString("yyyy-MM-dd"))
+                {
+                      
+                           <input id="DepartureDate" class="inputForm" value="@ViewBag.CookieDepartureDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" required         name="DepartureDate" type="date">
+                }else
+                {
+                    
+                <input id="DepartureDate" class="inputForm" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" required name="DepartureDate" type="date">
+                }
+                 
+            </div>
+
+            <div class="row">
+                <button class="btn btn-secondary btn-sm center ml-3" type="button" onclick="setDateToday()">Bugün</button>
+                <button class="btn btn-secondary btn-sm center ml-3" type="button" onclick="setDateTomorrow()">Yarın</button>
+            </div>
+
+
+
+            <div class="d-inline-block position-relative mt-3">
+                <input class="btn btn-danger rounded-0 pl-3 pr-3 pb-2" type="button"id="btnGetJourney" onclick="getBusJourney()" value="Bileti Bul">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Adding Bootstrap CDN - jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Adding Bootstrap CDN - Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Adding Bootstrap CDN - Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Adding JavaScript -->
+ 
+<script>
+    function getBusJourney()
+    {
+        document.getElementById('btnGetJourney').disabled = 'disabled';
+          var origin = $('option[value="'+$("#input-label-from").val()+'"]');
+          var originId= origin.length ? origin.attr('id') : '0';
+          var destionation = $('option[value="'+$("#input-label-to").val()+'"]');
+          var destinationId = destionation.length ? destionation.attr('id') : '0';
+
+          var departureDate = $("#DepartureDate").val();
+
+          var originLocation= $("#input-label-from").val();
+          var destinationLocation= $("#input-label-to").val();
+
+          if(destinationId=="0")
+          {
+              toastr.warning("Varış noktası boş geçilemez", "Uyarı");
+          }
+          else if(originId=="0" )
+          {
+               toastr.warning("Kalkış noktası boş geçilemez", "Uyarı");
+          }
+          else if(departureDate=="")
+          {
+             
+              toastr.warning("Yolculuk tarihi boş geçilemez", "Uyarı");
+          }
+          else{
+              
+                   window.location.href="/Home/GetBusJournerysViewList?OriginId="+originId+"&&DestinationId="+destinationId+"&&DepartureDate="+departureDate        +"&&OriginLocation="+originLocation+"&&DestinationLocation="+destinationLocation;
+          }
+
+
+    }
+</script>
+
+
+
+<script>
+    function checkDirection()
+    {
+        debugger;
+       var fromValue= $("#input-label-from").val();
+       var toValue= $("#input-label-to").val();
+        if(fromValue==toValue)
+        {
+            $("#input-label-to").val('');
+            toastr.warning("Kalkış ve varış noktası aynı seçilemez!","Uyarı");
+     
+
+        }
+
+    }
+</script>
+
+
+<script>
+       function changeDirection()
+       {
+          var fromValue= $("#input-label-from").val();
+          var toValue= $("#input-label-to").val();
+          $("#input-label-from").val(toValue);
+          $("#input-label-to").val(fromValue);
+
+       }
+</script>
+
+
+<script>
+    function setDateToday(){
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+
+              today = yyyy + '-' + mm + '-' + dd;
+            $("#DepartureDate").val(today);
+     }
+
+    function setDateTomorrow(){
+          var today = new Date();
+    var dd = String(today.getDate()+1).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+            $("#DepartureDate").val(today);
+        }
+</script>
+
+
+<script>
+    /* Input Search From Focus-In/Out */
+    $(".inputForm").focusin(function(){
+
+        $(this).prev("label").addClass("inputLabel-focusIn");
+    });
+
+    //// Input Search From Focus-Out */
+    $(".inputForm").focusout(function(){
+        var inputForm = $(this).val();
+
+        if (inputForm.length > 0) {
+
+            $(this).prev("label").addClass("inputLabel-focusIn");
+        } else {
+            $(this).prev("label").removeClass("inputLabel-focusIn");
+        }
+    });
+
+
+
+    // //Data Filter
+    //$("#input-label-from").change(function(){
+    //    var dataSelect = $(this).val();
+    //    console.log(dataSelect);
+
+    //    $("#input-to-list").find("option[value='"+dataSelect+"']").remove();
+    //});
+</script>
+
+
+<script>
+
+
+    $(document).ready(function() {
+                    $.ajax({
+                   method: "POST",
+                   url: "/Home/GetAllBusLocations",
+                   contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                   data: {  },
+                   beforeSend: function () {
+                            $.blockUI.defaults.css = {
+                        padding: 0,
+                        margin: 0,
+                        width: '30%',
+                        top: '30%',
+                        left: '35%',
+                        textAlign: 'center',
+                        cursor: 'wait'
+                    };
+
+                    $.blockUI({ message: $('#domMessage') });
+                   }
+               }).done(function (d) {
+                   if (d.failed == true) {
+                       toastr.error(d.message, "Hata");
+                   }else if(d.failed=="SessionEmpty"){
+                   window.location.href="/Home/Index";
+                   }
+                   else {
+                       //From start
+                       var optionFrom;
+                    var inputFromDatalist = $("#input-from-list");
+
+                    for (var i = 0; i < d.list.length; i++) {
+
+                         optionFrom = $("<option ></option>");
+                         optionFrom.attr("value", d.list[i].name);
+                        optionFrom.attr("id", d.list[i].id);
+
+                        if(d.originLocation==null)
+                        {
+                                 $("#input-label-from").val(d.list[0].name);
+                        }else{
+                                 $("#input-label-from").val(d.originLocation);
+                        }
+                        inputFromDatalist.append(optionFrom);
+
+                    }
+
+                       //From End
+
+
+                       //To start
+                         var optionTo;
+                         var inputToDatalist = $("#input-to-list");
+                       $("#input-to-list").empty();
+
+                          for (var i = 0; i < d.list.length; i++) {
+                            optionTo = $("<option></option>");
+                            optionTo.attr("value", d.list[i].name);
+                            optionTo.attr("id", d.list[i].id);
+                            inputToDatalist.append(optionTo);
+                    
+                            if(d.destinationLocation == null)
+                            {
+                                $("#input-label-to").val(d.list[2].name);
+                            }else{
+
+                             $("#input-label-to").val(d.destinationLocation);
+                            }
+                  }
+             //To End
+                   }
+               }).fail(function (xhr) {
+                   
+                        toastr.error("Hata oluştu, tekrar deneyiniz!", "Hata");
+                       setInterval(function(){
+                           window.location.href = "/Home/Index";},3000);
+                   
+               }).always(function () {
+                     $.unblockUI();
+               });
+       });
+
+
+
+</script>
+
+<script>
+        $('#input-label-from').on('input',function(e){
+            var searchingWord = $("#input-label-from").val();
+              $.ajax({
+                   method: "POST",
+                   url: "/Home/GetAllBusLocationsSearch",
+                   contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                   data: { search: searchingWord},
+                   beforeSend: function () {
+
+                   }
+               }).done(function (d) {
+
+                   if (d.failed == true) {
+                       toastr.error(d.message, "Hata");
+                   }
+                   else {
+
+                       $("#input-from-list").empty();
+                       //From start
+                       var optionFrom;
+                    var inputFromDatalist = $("#input-from-list");
+
+                    for (var i = 0; i < d.length; i++) {
+                        optionFrom = $("<option></option>");
+                        optionFrom.attr("value", d[i].name);
+                        optionFrom.attr("id", d[i].id);
+                        inputFromDatalist.append(optionFrom);
+                    }
+                   }
+
+               }).fail(function (xhr) {
+
+                    toastr.error("Hata oluştu, tekrar deneyiniz!", "Hata");
+                       setInterval(function(){
+                           window.location.href = "/Home/Index";},3000);
+               }).always(function () {
+
+               });
+    });
+</script>
+
+
+<script>
+        $('#input-label-to').on('input',function(e){
+            var searchingWord = $("#input-label-to").val();
+              $.ajax({
+                   method: "POST",
+                   url: "/Home/GetAllBusLocationsSearch",
+                   contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                   data: { search: searchingWord},
+                   beforeSend: function () {
+
+                   }
+               }).done(function (d) {
+
+                   if (d.failed == true) {
+                       toastr.error(d.message, "Hata");
+                   }else if(d.failed=="SessionEmpty"){
+                   window.location.href="/Home/Index";
+                   }
+                   else {
+
+
+                       $("#input-to-list").empty();
+                       //From start
+                       var optionFrom;
+                    var inputToList = $("#input-to-list");
+
+
+
+
+                    for (var i = 0; i < d.length; i++) {
+                        optionFrom = $("<option></option>");
+                        optionFrom.attr("value", d[i].name);
+                        optionFrom.attr("id", d[i].id);
+
+                        inputToList.append(optionFrom);
+                    }
+                   }
+
+               }).fail(function (xhr) {
+                toastr.error("Hata oluştu, tekrar deneyiniz!", "Hata");
+                setInterval(function(){window.location.href = "/Home/Index";},3000);
+               }).always(function () {
+
+               });
+    });
+</script>
